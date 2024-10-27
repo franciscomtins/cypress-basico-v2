@@ -10,8 +10,10 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
 
     })
 
-    it('preenche os campos obrigatórios e envia o formulário', function() {
+    it.only('preenche os campos obrigatórios e envia o formulário', function() {
         const longText = 'Teste 01 testo muito longo para ver como fica lá meu amigo, tão grande que vamos ver escrever' 
+
+        cy.clock() //concela o relatório para o momento do teste
 
         cy.get('#firstName').type('Francisco')
         cy.get('#lastName').type('Martins')
@@ -20,6 +22,9 @@ describe ('Central de Atendimento ao Cliente TAT', function() {
         cy.contains('button', 'Enviar').click()
 
         cy.get('.success').should('be.visible')
+
+        cy.tick(3000) // avança o relório pelo tempo passado
+        cy.get('.success').should('be.not.visible')
     })
 
     it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', function() {
